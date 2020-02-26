@@ -12,27 +12,27 @@ const CatPage = (state) => {
 
   const catId = useParams().id
 
-  const catApi = useCatApi()
+  const catApi = useCatApi(state.creds.jwtToken)
 
   const changeHandler = useCallback(event => {
     store.dispatch( updateCatParamSet({ ...state.form, [event.target.name]: event.target.value }) )
   }, [state.form])
 
   const updateHandler = useCallback(async event => {
-    await catApi.updateCat( { jwtToken: state.creds.jwtToken, cat: { ...state.data.cat, ...state.form } } )
+    await catApi.updateCat( { cat: { ...state.data.cat, ...state.form } } )
 
     store.dispatch( updateCatSuccess({ ...state.data.cat, ...state.form }) )
-   }, [state.data.cat, state.form, state.creds.jwtToken])
+   }, [state.data.cat, state.form])
 
-  const getCat = useCallback(async (t, i) => {
-    var cat = await catApi.getCat( { jwtToken: t, id: i  } )
+  const getCat = useCallback(async (i) => {
+    var cat = await catApi.getCat( { id: i  } )
     store.dispatch( getCatSuccess(cat) )
     store.dispatch(  updateCatParamSet( { name: cat.name, age: cat.age } ) )
   }, [])
 
   useEffect(() => {
-     getCat(state.creds.jwtToken, catId)
-  }, [state.creds.jwtToken, catId])
+     getCat(catId)
+  }, [catId])
 
   if (state.data.isLoading) {
     return <Loader />
@@ -45,4 +45,7 @@ const CatPage = (state) => {
   )
 }
 
+/**
+ * Container  component for display cat all information and update it
+ */
 export default connect( state => ({ form: state.catFormState.u_cat, data: state.catState, creds: state.authState }) )( CatPage )

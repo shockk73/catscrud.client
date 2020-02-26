@@ -7,7 +7,7 @@ import store from '../store'
 
 const CreatePage = (state) => {
   const history = useHistory()
-  const catApi = useCatApi()
+  const catApi = useCatApi(state.creds.jwtToken)
 
   useEffect(() => {
     window.M.updateTextFields()
@@ -19,11 +19,11 @@ const CreatePage = (state) => {
 
   const pressHandler = useCallback(async event => {
     if (event.key === 'Enter') {
-        const data = await catApi.addCat({ jwtToken: state.creds.jwtToken, ...state.form })
+        await catApi.addCat({ ...state.form })
         store.dispatch( createCatParamSet({ name: "", age: 0 }) )
         history.push(`/cats`)
     }
-  }, [state.form, state.creds.jwtToken])
+  }, [state.form])
 
   return (
     <div className="row">
@@ -57,4 +57,7 @@ const CreatePage = (state) => {
   )
 }
 
+/**
+ * Container and presentional component for creating new cat
+ */
 export default connect(state => ({ form: state.catFormState.c_cat, creds: state.authState }))(CreatePage)

@@ -40,4 +40,7 @@ const CatList = ({ cats, deleteHandler }) => {
   )
 }
 
+/**
+ * Presentional component for display car list
+ */
 export default connect( state => ( {cats: state.catState.cats} ) )(CatList)

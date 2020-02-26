@@ -28,4 +28,7 @@ function App(state) {
   )
 }
 
+/**
+ * Application component
+ */
 export default connect( state => ( { creds: state.authState } ) )(App)

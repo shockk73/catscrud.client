@@ -4,6 +4,9 @@ import { authUserSuccess, authTokenReady } from "../reducers/actions/auth-action
 
 const storageName = 'userData'
 
+/**
+ * Hook for working with auth user creds in localsotage
+ */
 export const useAuth = () => {
 
     const login = useCallback((jwtToken, userName) => {

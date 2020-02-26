@@ -2,7 +2,9 @@ import { useHttp } from "../http.hook";
 import { useCallback } from 'react'
 
 
-
+/**
+ * Api for creating auth token
+ */
 export const useUserApi = () => {
 
     var request = useHttp();

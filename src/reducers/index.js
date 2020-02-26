@@ -14,4 +14,8 @@ var reducers = combineReducers({
     authFormState
 });
 
+
+/**
+ * Combining all reducers
+ */
 export default reducers;

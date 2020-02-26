@@ -2,7 +2,10 @@ import { useCallback } from 'react'
 import { catRequestSended, catRequestSending } from '../reducers/actions/cats-crud-actions'
 import store from '../store';
 
-export const useHttp = () => {
+/**
+ * Hook for working with requests 
+ */
+export const useHttp = (token) => {
 
 
     const request = useCallback(async (url, method, body, headers = {}) => {
@@ -19,6 +22,12 @@ export const useHttp = () => {
         }
 
         try {
+            if(token) {
+                headers = {
+                    ...headers,
+                    Authorization: `Bearer ${token}`
+                }
+            }
             if(body) {
                 body = JSON.stringify(body)
                 headers['Content-type'] = 'application/json'
@@ -39,7 +48,7 @@ export const useHttp = () => {
             store.dispatch(catRequestSended())
             throw e
         }
-    }, [])
+    }, [token])
 
     return request
 }

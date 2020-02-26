@@ -28,5 +28,7 @@ const catReducer = function(state = initialState, action) {
   return state;
 
 }
-
+/**
+ * State of database cat object
+ */
 export default catReducer;

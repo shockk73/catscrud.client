@@ -1,5 +1,8 @@
 import React from 'react'
 
+/**
+ * Presentional component for display fetching any information from api
+ */
 export const Loader = () => (
    <div>
     <div className="preloader-wrapper active">

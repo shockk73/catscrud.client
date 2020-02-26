@@ -4,18 +4,18 @@ import { useCallback } from 'react'
 
 
 
-
-export const useCatApi = () => {
+/**
+ * Api for CRUD cat operations
+ */
+export const useCatApi = (jwtToken) => {
     
-    var request = useHttp();
+    var request = useHttp(jwtToken);
 
     const getCats = useCallback
     (
-        async (req) => {
+        async () => {
 
-            var cats = await request(`/api/cats`, 'GET', null, {
-                Authorization: `Bearer ${req.jwtToken}`
-            })
+            var cats = await request(`/api/cats`, 'GET')
             return cats;
         }, []
     )    
@@ -24,9 +24,7 @@ export const useCatApi = () => {
 
     const getCat = useCallback(async (req) =>  {
 
-        var cat = await request(`/api/cats/` + req.id, 'GET', null, {
-            Authorization: `Bearer ${req.jwtToken}`
-        })
+        var cat = await request(`/api/cats/` + req.id, 'GET')
         
         return cat;
     }, [])
@@ -35,24 +33,18 @@ export const useCatApi = () => {
 
     const deleteCat = useCallback( async (req) => {
         
-        await request(`/api/cats/` + req.id, 'DELETE', null, {
-            Authorization: `Bearer ${req.jwtToken}`
-        })
+        await request(`/api/cats/` + req.id, 'DELETE')
     }, [])
 
     const addCat = useCallback( async (req) => {
 
-        await request(`/api/cats`, 'POST', { name: req.name, age: req.age }, {
-            Authorization: `Bearer ${req.jwtToken}`
-        })
+        await request(`/api/cats`, 'POST', { name: req.name, age: req.age } )
 
     }, [])
 
 
     const updateCat = useCallback( async (req) => {
-        await request(`/api/cats`, 'PUT', { ...req.cat }, {
-            Authorization: `Bearer ${req.jwtToken}`
-        })
+        await request(`/api/cats`, 'PUT', { ...req.cat })
     }, [])
 
     return { getCat, getCats, addCat, updateCat, deleteCat  }

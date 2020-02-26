@@ -27,4 +27,7 @@ const Navbar = (state) => {
   )
 }
 
+/**
+ * Presentional component for navigation in application
+ */
 export default connect(state => ( { creds: state.authState } ))(Navbar)

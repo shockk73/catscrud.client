@@ -27,4 +27,7 @@ const catFormReducer = function(state = initialState, action) {
 
 }
 
+/**
+ * State of input cat data
+ */
 export default catFormReducer;

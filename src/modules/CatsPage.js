@@ -9,21 +9,21 @@ import { getCatsSuccess, deleteCatSuccess } from '../reducers/actions/cats-crud-
 const CatsPage = (state) => {
 
 
-  const catApi = useCatApi()
+  const catApi = useCatApi(state.creds.jwtToken)
 
   const getCats = useCallback(async () => {
-    var cats = await catApi.getCats(  { jwtToken: state.creds.jwtToken }  )
+    var cats = await catApi.getCats()
     store.dispatch( getCatsSuccess(cats) )
-  },[state.creds.jwtToken])
+  },[])
 
   const deleteHandler = useCallback(async (id) => {
-    await catApi.deleteCat( { jwtToken: state.creds.jwtToken, id } )
+    await catApi.deleteCat( { id } )
     store.dispatch( deleteCatSuccess(id) )
-  }, [state.creds.jwtToken])
+  }, [])
 
   useEffect(() => {
     getCats()
-  }, [state.creds.jwtToken])
+  }, [])
 
   if (state.data.isLoading) {
     return <Loader/>
@@ -36,4 +36,7 @@ const CatsPage = (state) => {
   )
 }
 
+/**
+ * Container  component for display all cats and remove any of it
+ */
 export default connect( state => ( { data: state.catState, creds: state.authState } ) )(CatsPage)

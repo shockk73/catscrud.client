@@ -34,4 +34,7 @@ const CatCard = ({ updateHandler, changeHandler, form, cat }) => {
     )
 }
 
+/**
+ * Presentional component for display cat info
+ */
 export default connect( state => ( {form:state.catFormState.u_cat, cat: state.catState.cat} ) )(CatCard)

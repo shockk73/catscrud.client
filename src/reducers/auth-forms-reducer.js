@@ -17,5 +17,7 @@ const authFormReducer = function(state = initialState, action) {
   return state;
 
 }
-
+/**
+ * State of user credentions for auth
+ */
 export default authFormReducer;

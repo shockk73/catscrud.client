@@ -80,4 +80,7 @@ const AuthPage = (state) => {
   )
 }
 
+/**
+ * Container  and presentional component for authorise user
+ */
 export default connect((state) => ( { form: state.authFormState, creds: state.authState  } ))(AuthPage);

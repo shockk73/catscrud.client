@@ -1,26 +1,24 @@
 import React, { useEffect, useCallback } from 'react'
 import {useCatApi} from '../hooks/api/cat.api'
 import {useHistory} from 'react-router-dom'
-import {createCatParamSet} from '../reducers/actions/cat-forms-actions'
 import { connect } from 'react-redux'
 import store from '../store'
+import * as types from "../reducers/actions/action-types"
 
 const CreatePage = (state) => {
   const history = useHistory()
-  const catApi = useCatApi(state.creds.jwtToken)
 
   useEffect(() => {
     window.M.updateTextFields()
   }, [])
 
   const changeHandler = useCallback(event => {
-    store.dispatch( createCatParamSet({ ...state.form, [event.target.name]: event.target.value }) )
+    store.dispatch( types.updateCatCreatingFormAction({ ...state.form, [event.target.name]: event.target.value }) )
   }, [state.form])
 
   const pressHandler = useCallback(async event => {
     if (event.key === 'Enter') {
-        await catApi.addCat({ ...state.form })
-        store.dispatch( createCatParamSet({ name: "", age: 0 }) )
+        store.dispatch( types.catCreateActions.request(state.form) )
         history.push(`/cats`)
     }
   }, [state.form])

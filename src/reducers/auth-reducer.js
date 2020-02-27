@@ -1,4 +1,5 @@
 import * as types from '../reducers/actions/action-types';
+import { removeFromLocalSorage, setToLocalSorage } from '../hooks/auth.hook';
 
 const initialState = {
   jwtToken: null,
@@ -11,13 +12,15 @@ const authReducer = function(state = initialState, action) {
 
   switch(action.type) {
 
-    case types.AUTH_USER_SUCCESS:
-        return {  ...state, jwtToken: action.jwtToken, userName: action.userName  }
-    case types.AUTH_REQUEST_SENDING:
+    case types.TOKEN_GET[types.SUCCESS]:
+        setToLocalSorage(action.jwtToken, action.userName)
+        return {  ...state, jwtToken: action.jwtToken, userName: action.userName, isLoading: false  }
+    case types.TOKEN_REMOVE:
+        removeFromLocalSorage()
+        return {  ...state, jwtToken: null, userName: null  }
+    case types.TOKEN_GET[types.REQUEST]:
         return {  ...state, isLoading: true  }
-    case types.AUTH_REQUEST_SENDED:
-        return {  ...state, isLoading: false  }
-    case types.AUTH_TOKEN_READY:
+    case types.TOKEN_READY:
         return {  ...state, isReady: true  }
 
   }

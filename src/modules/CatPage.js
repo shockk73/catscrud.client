@@ -1,37 +1,25 @@
 import React, {useCallback, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
-import {useCatApi} from '../hooks/api/cat.api'
 import {Loader} from '../components/Loader'
 import CatCard from '../components/CatCard'
 import { connect } from 'react-redux'
 import store from '../store'
-import { getCatSuccess, updateCatSuccess } from '../reducers/actions/cats-crud-actions'
-import { updateCatParamSet } from '../reducers/actions/cat-forms-actions'
+import * as types from "../reducers/actions/action-types"
 
 const CatPage = (state) => {
 
   const catId = useParams().id
 
-  const catApi = useCatApi(state.creds.jwtToken)
-
   const changeHandler = useCallback(event => {
-    store.dispatch( updateCatParamSet({ ...state.form, [event.target.name]: event.target.value }) )
+    store.dispatch( types.updateCatUpdatingFormAction({ ...state.form, [event.target.name]: event.target.value }) )
   }, [state.form])
 
   const updateHandler = useCallback(async event => {
-    await catApi.updateCat( { cat: { ...state.data.cat, ...state.form } } )
-
-    store.dispatch( updateCatSuccess({ ...state.data.cat, ...state.form }) )
+    store.dispatch( types.catUpdateActions.request({ ...state.data.cat, ...state.form }) )
    }, [state.data.cat, state.form])
 
-  const getCat = useCallback(async (i) => {
-    var cat = await catApi.getCat( { id: i  } )
-    store.dispatch( getCatSuccess(cat) )
-    store.dispatch(  updateCatParamSet( { name: cat.name, age: cat.age } ) )
-  }, [])
-
   useEffect(() => {
-     getCat(catId)
+    store.dispatch( types.catGetActions.request(catId) )
   }, [catId])
 
   if (state.data.isLoading) {

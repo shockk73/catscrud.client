@@ -5,6 +5,10 @@ import CreatePage from './modules/CreatePage'
 import CatPage from './modules/CatPage'
 import AuthPage from './modules/AuthPage'
 
+
+/**
+ * Component for map path and componentns of application
+ */
 export const useRoutes = isAuthenticated => {
   if (isAuthenticated) {
     return (

@@ -9,7 +9,7 @@ const authFormReducer = function(state = initialState, action) {
 
   switch(action.type) {
 
-    case types.AUTH_PARAM_SET:
+    case types.UPDATE_AUTH_FORM:
         return {  ...state, username: action.username, password: action.password  }
 
   }

@@ -1,29 +1,22 @@
 import React, { useEffect, useCallback } from 'react'
 import store from '../store'
 import { connect } from 'react-redux';
-import { useAuth } from '../hooks/auth.hook'
-import { useUserApi } from '../hooks/api/user.api'
-import { authParamSet } from '../reducers/actions/auth-forms-actions'
+import * as types from '../reducers/actions/action-types'
 
 const AuthPage = (state) => {
-
-  var auth = useAuth()
-
-  var userApi = useUserApi()
 
   useEffect(() => {
     window.M.updateTextFields()
   }, [])
 
   const changeHandler = useCallback(event => {
-    store.dispatch( authParamSet({ ...state.form, [event.target.name]: event.target.value }) )
+    store.dispatch( types.updateAuthFormAction({ ...state.form, [event.target.name]: event.target.value }) )
   }, [state.form])
 
 
   const loginHandler = useCallback(async () => {
     try {
-      const token = await userApi.getToken(state.form)
-      auth.login(token.token, token.userName)
+      store.dispatch( types.tokenGetActions.request(state.form) )
     } catch (e) { alert(e.message) }
   }, [state.form])
 

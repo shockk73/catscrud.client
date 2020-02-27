@@ -1,6 +1,3 @@
-import { useCallback } from 'react'
-import { catRequestSended, catRequestSending } from '../reducers/actions/cats-crud-actions'
-import store from '../store';
 
 /**
  * Hook for working with requests 
@@ -8,9 +5,9 @@ import store from '../store';
 export const useHttp = (token) => {
 
 
-    const request = useCallback(async (url, method, body, headers = {}) => {
+    const request =  async (url, method, body, headers = {}) => {
 
-        store.dispatch(catRequestSending())
+        console.log( url, body )
 
         headers  = {
             "Accept": "application/json",
@@ -41,14 +38,11 @@ export const useHttp = (token) => {
                     || 'Something wrong')
             }
 
-            store.dispatch(catRequestSended())
-
             return data
         } catch(e) {
-            store.dispatch(catRequestSended())
             throw e
         }
-    }, [token])
+    }
 
     return request
 }

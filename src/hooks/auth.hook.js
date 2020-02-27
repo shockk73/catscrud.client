@@ -1,42 +1,40 @@
-import { useCallback, useEffect} from 'react'
+import { useEffect} from 'react'
 import  store from "../store"
-import { authUserSuccess, authTokenReady } from "../reducers/actions/auth-actions"
+import { tokenGetActions, tokenReadyAction } from "../reducers/actions/action-types"
 
 const storageName = 'userData'
+
+export const setToLocalSorage =(jwtToken, userName) => {
+    localStorage.setItem(storageName, JSON.stringify({
+        jwtToken, userName
+    }))
+}
+
+export const getJwtTokenData = () => {
+    const data = JSON.parse(localStorage.getItem(storageName))
+
+    return data ? { jwtToken: data.jwtToken || null, userName: data.userName || null } : { jwtToken: null, userName: null }
+}
+
+export const removeFromLocalSorage = () => {
+    localStorage.removeItem(storageName)
+}
 
 /**
  * Hook for working with auth user creds in localsotage
  */
 export const useAuth = () => {
 
-    const login = useCallback((jwtToken, userName) => {
-        
-        console.log("dispatching login", { jwtToken, userName })
-
-        store.dispatch( authUserSuccess({ jwtToken, userName }) )
-
-        localStorage.setItem(storageName, JSON.stringify({
-            jwtToken, userName
-        }))
-    }, [])
-
-    const logout = useCallback(() => {
-        
-        store.dispatch( authUserSuccess({ jwtToken: null, userName: null }) )
-
-        localStorage.removeItem(storageName)
-      }, [])
-
     useEffect(() => {
-        const data = JSON.parse(localStorage.getItem(storageName))
+        const data = getJwtTokenData()
     
-        if (data && data.jwtToken) {
-          login(data.jwtToken, data.userName)
+        if (data.jwtToken) {
+          store.dispatch( tokenGetActions.success({ jwtToken: data.jwtToken, userName: data.userName }) )
         }
         
-        store.dispatch( authTokenReady() )
+        store.dispatch( tokenReadyAction() )
 
-      }, [login])
+      }, [getJwtTokenData])
 
-    return { login, logout }
+    return { setToLocalSorage, removeFromLocalSorage, getJwtTokenData }
 }

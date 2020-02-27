@@ -11,41 +11,39 @@ export const useCatApi = (jwtToken) => {
     
     var request = useHttp(jwtToken);
 
-    const getCats = useCallback
-    (
+    const getCats = 
         async () => {
 
             var cats = await request(`/api/cats`, 'GET')
             return cats;
-        }, []
-    )    
+        }  
         
 
 
-    const getCat = useCallback(async (req) =>  {
+    const getCat = async (req) =>  {
 
         var cat = await request(`/api/cats/` + req.id, 'GET')
         
         return cat;
-    }, [])
+    }
 
 
 
-    const deleteCat = useCallback( async (req) => {
+    const deleteCat = async (req) => {
         
         await request(`/api/cats/` + req.id, 'DELETE')
-    }, [])
+    }
 
-    const addCat = useCallback( async (req) => {
+    const addCat = async (req) => {
 
-        await request(`/api/cats`, 'POST', { name: req.name, age: req.age } )
+        await request(`/api/cats`, 'POST', { name: req.name, age: parseInt(req.age) } )
 
-    }, [])
+    }
 
 
-    const updateCat = useCallback( async (req) => {
-        await request(`/api/cats`, 'PUT', { ...req.cat })
-    }, [])
+    const updateCat = async (req) => {
+        await request(`/api/cats`, 'PUT', { id: req.cat.id, name: req.cat.name, age: parseInt(req.cat.age) })
+    }
 
     return { getCat, getCats, addCat, updateCat, deleteCat  }
 

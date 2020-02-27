@@ -1,15 +1,15 @@
 import React from 'react'
 import {NavLink, useHistory} from 'react-router-dom'
-import { useAuth } from '../hooks/auth.hook'
 import { connect } from 'react-redux';
+import store from '../store';
+import * as types from "../reducers/actions/action-types"
 
 const Navbar = (state) => {
   const history = useHistory()
-  const auth = useAuth()
 
   const logoutHandler = event => {
     event.preventDefault()
-    auth.logout()
+    store.dispatch( types.tokenRemoveAction() )
     history.push('/')
   }
 

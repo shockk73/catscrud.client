@@ -7,8 +7,7 @@ import * as types from '../../reducers/actions/action-types';
 export function authUserSuccess(cred) {
   return {
     type: types.AUTH_USER_SUCCESS,
-    jwtToken: cred.jwtToken,
-    userName: cred.userName
+    ...cred
   };
 }
 
